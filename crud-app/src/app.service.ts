@@ -14,6 +14,7 @@ let id: number = 0
 
 @Injectable()
 export class AppService {
+
   getHello(): string {
     return 'Hello World!';
   }
@@ -34,7 +35,7 @@ export class AppService {
   }
 
   getAccount(id: number): Account | undefined {
-    let result: Account | undefined = {id: -1, name: " "};
+    let result: Account |undefined = {id: -1, name: "Account not found"};
 
     for (const key of dummy_data.keys()) {
       if(key == id) {
@@ -43,5 +44,31 @@ export class AppService {
     }
     
     return result;
+  }
+
+  updateAccount(newName: string, id: number): Account | string {
+    let base: Account | undefined = undefined;
+
+    for (const key of dummy_data.keys()) {
+      if(key == id) {
+        base = {id: key, name: newName}
+        dummy_data.set(key, base);
+        return base;
+      }
+    }
+    return "Account not found";
+  }
+
+  deleteAccount(id: number): string {
+      let base: Account | undefined = undefined;
+
+      for (const key of dummy_data.keys()) {
+        if(key == id) {
+          dummy_data.delete(key);
+          return "Account deleted";
+        } 
+      }
+      
+      return "Account not found";
   }
 }
