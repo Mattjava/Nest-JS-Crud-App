@@ -1,5 +1,7 @@
-import { Controller, Get, Param } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Get, Param, Post, Req } from '@nestjs/common';
+import type { Request } from 'express';
+import { AppService} from './app.service';
+import type {Account} from './app.service';
 
 @Controller()
 export class AppController {
@@ -10,8 +12,19 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get(':name')
-  greet(@Param('name') name : string): string {
-    return this.appService.throwInputBack(name);
+  @Get('account')
+  getAllAccounts(): string[] {
+    return this.appService.getAllAccounts();
   }
+
+  @Post('account')
+  saveAccount(@Req() input: Request): Account {
+    return this.appService.saveAccount(input.body['name'])
+  }
+
+  @Get('account/:id')
+  getAccount(@Param('id') id: number): Account | undefined {
+    return this.appService.getAccount(id);
+  }
+
 }
